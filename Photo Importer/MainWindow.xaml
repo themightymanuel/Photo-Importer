@@ -10,9 +10,19 @@
 
         <CheckBox x:Name="DeleteCheckbox" Content="Delete After Copying" Checked="DeleteCheckbox_Checked" Unchecked="DeleteCheckbox_Unchecked" HorizontalAlignment="Left" Margin="10,0,0,25" Height="15" VerticalAlignment="Bottom"/>
         <ProgressBar x:Name="OverallProgressBar" Margin="10,0,10,10" Height="10" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="FolderNameTextBox" Height="23" Margin="10,36,10,0" VerticalAlignment="Top"/>
-        <Button x:Name="StartButton" Click="StartButton_Click" Content="Start" Margin="0,0,10,23" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="81" RenderTransformOrigin="0.5,0.5">
-        </Button>
+        <!--<ComboBox x:Name="FolderNameTextBox" Height="23" Margin="10,36,10,0" VerticalAlignment="Top" IsEditable="True" IsTabStop="True" IsTextSearchEnabled="False" KeyDown="KeyPressed"/>-->
+        <TextBox x:Name="FolderNameTextBox" Height="23" Margin="10,36,10,0" VerticalAlignment="Top" KeyDown="KeyPressed" VerticalContentAlignment="Center"/>
+        <Button x:Name="ShowLastFolders" Content="&#709;" Margin="0,36,10,0" VerticalAlignment="Top" Height="23" Click="LastFilesButton_Click" HorizontalAlignment="Right" Width="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
+        <ListBox x:Name="LastFoldersList" Margin="10,64,10,10" Panel.ZIndex="99" Visibility="Collapsed" SelectionChanged="LastFoldersList_SelectionChanged" MouseLeave="ListviewMouseLeave">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="StartButton" Click="StartButton_Click" Content="Start" Margin="0,0,10,23" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="81"/>
         <Label Content="Folder Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="SourcePath" Content="Test" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top"/>
         <Label x:Name="DestinationPath" Content="Test" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top"/>

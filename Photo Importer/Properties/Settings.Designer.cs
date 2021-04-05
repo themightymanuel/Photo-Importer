@@ -101,5 +101,16 @@ namespace Photo_Importer.Properties {
                 this["OpenAfterCopy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection LastFolders {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["LastFolders"]));
+            }
+            set {
+                this["LastFolders"] = value;
+            }
+        }
     }
 }

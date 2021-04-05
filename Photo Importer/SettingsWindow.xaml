@@ -5,19 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Photo_Importer"
         mc:Ignorable="d"
-        Title="Settings" Height="380" Width="250" ResizeMode="NoResize">
+        Title="Settings" Height="401.747" Width="250" ResizeMode="NoResize">
     <Grid>
         <Button x:Name="ApplyButton" Content="Apply" Click="ApplyButton_Click" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75"/>
         <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
         <CheckBox x:Name="DeleteCheckbox" Content="Delete After Copying" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="RenameCheckbox" Content="Rename Files Numerically" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="FileExtensionListBox" Height="100" Margin="10,50,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="AddExtensionTextbox" Height="23" Margin="10,180,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button x:Name="AddExtensionButton" Content="Add Extension" Click="AddExtensionButton_Click" Margin="10,208,10,0" VerticalAlignment="Top"/>
-        <Button x:Name="DeleteExtensionButton" Content="Delete Extension" Click="DeleteExtensionButton_Click" Margin="10,155,10,0" VerticalAlignment="Top"/>
-        <Label Content="Path" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="PathTextBox" Height="23" Margin="10,264,35,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button x:Name="FolderSelectButton" Content="..." Margin="0,264,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Click="FolderSelectButton_Click"/>
+        <CheckBox x:Name="PopupCheckbox" Content="Popup Alert When Complete" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="OpenCheckbox" Content="Open Folder After Complete" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="FileExtensionListBox" Height="100" Margin="10,90,10,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="AddExtensionTextbox" Height="23" Margin="10,220,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="AddExtensionButton" Content="Add Extension" Click="AddExtensionButton_Click" Margin="10,248,10,0" VerticalAlignment="Top"/>
+        <Button x:Name="DeleteExtensionButton" Content="Delete Extension" Click="DeleteExtensionButton_Click" Margin="10,195,10,0" VerticalAlignment="Top"/>
+        <Label Content="Path" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="PathTextBox" Height="23" Margin="10,304,35,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="FolderSelectButton" Content="..." Margin="0,304,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Click="FolderSelectButton_Click"/>
 
     </Grid>
 </Window>

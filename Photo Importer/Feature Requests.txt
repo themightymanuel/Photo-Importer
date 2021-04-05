@@ -1,0 +1,7 @@
+﻿✔ Drop down last 5 file locations
+✔ Include folder name in file name
+✔ Open after copy setting, other settings not yet visible
+✔ just click enter instead of pressing start
+✔ fix issue with cursor focus
+automatic open (https://docs.microsoft.com/en-us/windows/win32/shell/how-to-register-a-handler-for-a-device-event)
+possibly add option to deal with multiple drives

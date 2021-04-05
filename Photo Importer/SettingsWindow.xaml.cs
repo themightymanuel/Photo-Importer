@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Forms;
 using Photo_Importer.Properties;
 
 namespace Photo_Importer
 {
-    /// <summary>
-    /// Interaction logic for Settings.xaml
-    /// </summary>
-    public partial class SettingsWindow : Window
+	/// <summary>
+	/// Interaction logic for Settings.xaml
+	/// </summary>
+	public partial class SettingsWindow : Window
     {
         System.Collections.Specialized.StringCollection Ext;
         public SettingsWindow()
@@ -27,6 +16,8 @@ namespace Photo_Importer
             InitializeComponent();
             DeleteCheckbox.IsChecked = Settings.Default.Delete;
             RenameCheckbox.IsChecked = Settings.Default.Rename;
+            PopupCheckbox.IsChecked = Settings.Default.NotifyComplete;
+            OpenCheckbox.IsChecked = Settings.Default.OpenAfterCopy;
             PathTextBox.Text = Settings.Default.Path;
             Ext = Settings.Default.Extensions;
             FileExtensionListBox.ItemsSource = Ext;
@@ -36,6 +27,8 @@ namespace Photo_Importer
         {
             Settings.Default.Delete = (bool)DeleteCheckbox.IsChecked;
             Settings.Default.Rename = (bool)RenameCheckbox.IsChecked;
+            Settings.Default.NotifyComplete = (bool)PopupCheckbox.IsChecked;
+            Settings.Default.OpenAfterCopy = (bool)OpenCheckbox.IsChecked;
             Settings.Default.Extensions = Ext;
             Settings.Default.Save();
             this.Close();

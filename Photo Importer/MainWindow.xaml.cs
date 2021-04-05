@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
-using System.Threading;
 using System.ComponentModel;
 using Photo_Importer.Properties;
 using System.Media;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace Photo_Importer
 {
@@ -42,18 +32,19 @@ namespace Photo_Importer
 			bw.DoWork += Bw_DoWork;
 			bw.ProgressChanged += Bw_ProgressChanged;
 			bw.RunWorkerCompleted += Bw_RunWorkerCompleted;
-			FolderNameTextBox.Focus();
-			//Reset Settings
 
-			//Settings.Default.Reset();
-			//Settings.Default.Save();
-
+			//Set Default Settings If Not Set
+			if(Settings.Default.LastFolders == null)
+			{
+				Settings.Default.LastFolders = new System.Collections.Specialized.StringCollection();
+			}
 			if (Settings.Default.Path == "UNSET")
 			{
 				Settings.Default.Path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 				Settings.Default.Save();
 			}
 
+			//Get Drives Only works if exactly one drive
 			if (Drives.Count == 1)
 			{
 				SourcePath.Content = PathShortner(Strings.StartLabelText, Drives.FirstOrDefault().Name);
@@ -74,6 +65,15 @@ namespace Photo_Importer
 					this.Close();
 				}
 			}
+
+			//For Textbox
+			FolderNameTextBox.Focus();
+			LastFoldersList.ItemsSource = Settings.Default.LastFolders;
+
+			//For Combo box uncomment
+			//FolderNameTextBox.ItemsSource = Settings.Default.LastFolders;
+			//FolderNameTextBox.Focus();
+			//Keyboard.Focus(this.FolderNameTextBox);
 			var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
 			this.Left = desktopWorkingArea.Right - this.Width;
 			this.Top = desktopWorkingArea.Bottom - this.Height;
@@ -112,17 +112,21 @@ namespace Photo_Importer
 
 		private void StartButton_Click(object sender, RoutedEventArgs e)
 		{
+			StartTransfer();
+		}
+
+		private void StartTransfer()
+		{
 			StartButton.IsEnabled = false;
 			string path = Drives[0].RootDirectory.FullName;
-			string newPath = FolderNameTextBox.Text;
-			if (newPath.Length > 0)
+			string newFolder = FolderNameTextBox.Text;
+			Properties.Settings.Default.LastFolders.Insert(0, newFolder);
+			FixLastFoldersAndSave();
+
+			if (newFolder.Length > 0)
 			{
-				newPath = Settings.Default.Path + "\\" + newPath + "\\";
-				string[] args = { path, newPath, };
-				if (!Directory.Exists(newPath))
-				{
-					Directory.CreateDirectory(newPath);
-				}
+				string newPath = Settings.Default.Path + "\\" + newFolder + "\\";
+				string[] args = { path, newFolder, newPath };
 				bw.RunWorkerAsync(args);
 			}
 			else
@@ -131,12 +135,21 @@ namespace Photo_Importer
 			}
 		}
 
-		private void RecursiveFileTransfer(string path, string newPath, int fileNumber)
+		private void FixLastFoldersAndSave()
+		{
+			while (Properties.Settings.Default.LastFolders.Count > 5)
+			{
+				Settings.Default.LastFolders.RemoveAt(5);
+			}
+			Settings.Default.Save();
+		}
+
+		private void RecursiveFileTransfer(string path, string newFolder, string newPath, int fileNumber)
 		{
 			string[] filePaths = Directory.GetFiles(path);
-			FilesProcessed++;
 			foreach (string filePath in filePaths)
 			{
+				FilesProcessed++;
 				string extension = System.IO.Path.GetExtension(filePath);
 				string fileName = System.IO.Path.GetFileName(filePath);
 				string newFile = newPath + fileName;
@@ -145,7 +158,7 @@ namespace Photo_Importer
 					bool keepRunning = true;
 					while (keepRunning)
 					{
-						newFile = newPath + fileNumber.ToString("D5") + extension;
+						newFile = newPath + newFolder + fileNumber.ToString("D5") + extension;
 						if (File.Exists(newFile))
 						{
 							fileNumber++;
@@ -158,6 +171,10 @@ namespace Photo_Importer
 				}
 				if (Settings.Default.Extensions.Contains(extension.ToLower()))
 				{
+					if(!Directory.Exists(newPath))
+					{
+						Directory.CreateDirectory(newPath);
+					}
 					if (Settings.Default.Delete)
 					{
 						File.Move(filePath, newFile);
@@ -173,7 +190,7 @@ namespace Photo_Importer
 			string[] directoryPaths = Directory.GetDirectories(path);
 			foreach (string directoryPath in directoryPaths)
 			{
-				RecursiveFileTransfer(directoryPath, newPath, fileNumber);
+				RecursiveFileTransfer(directoryPath, newFolder, newPath, fileNumber);
 			}
 			filePaths = Directory.GetFiles(path);
 			directoryPaths = Directory.GetDirectories(path);
@@ -223,7 +240,50 @@ namespace Photo_Importer
 		private void Bw_DoWork(object sender, DoWorkEventArgs e)
 		{
 			string[] args = e.Argument as string[];
-			RecursiveFileTransfer(args[0], args[1], 1);
+			RecursiveFileTransfer(args[0], args[1], args[2], 1);
+		}
+
+		private void KeyPressed(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if(e.Key == System.Windows.Input.Key.Enter)
+			{
+				StartTransfer();
+			}
+		}
+
+		private void LastFilesButton_Click(object sender, RoutedEventArgs e)
+		{
+			if(LastFoldersList.Visibility == Visibility.Collapsed)
+			{
+				LastFoldersList.Visibility = Visibility.Visible;
+				LastFoldersList.Focus();
+				ShowLastFolders.Content = "\u02c4";
+			}
+			else
+			{
+				LastFoldersList.Visibility = Visibility.Collapsed;
+				ShowLastFolders.Content = "\u02c5";
+			}
+		}
+
+		private void LastFoldersList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			FolderNameTextBox.Text = LastFoldersList.SelectedItem.ToString();
+			LastFoldersList.Visibility = Visibility.Collapsed;
+			ShowLastFolders.Content = "\u02c5";
+		}
+
+		private void ListBoxLostFocus(object sender, RoutedEventArgs e)
+		{
+			LastFoldersList.Visibility = Visibility.Collapsed;
+			ShowLastFolders.Content = "\u02c5";
+		}
+
+		private void ListviewMouseLeave(object sender, MouseEventArgs e)
+		{
+			LastFoldersList.Visibility = Visibility.Collapsed;
+			ShowLastFolders.Content = "\u02c5";
+
 		}
 	}
 }
