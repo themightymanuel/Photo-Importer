@@ -5,15 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Photo_Importer"
         mc:Ignorable="d"
-        Title="Photo Importer" Height="200" Width="300" ResizeMode="NoResize">
+        Title="Photo Importer" Height="200" Width="300" ResizeMode="NoResize" MouseDown="Window_MouseDown">
     <Grid>
 
         <CheckBox x:Name="DeleteCheckbox" Content="Delete After Copying" Checked="DeleteCheckbox_Checked" Unchecked="DeleteCheckbox_Unchecked" HorizontalAlignment="Left" Margin="10,0,0,25" Height="15" VerticalAlignment="Bottom"/>
         <ProgressBar x:Name="OverallProgressBar" Margin="10,0,10,10" Height="10" VerticalAlignment="Bottom"/>
-        <!--<ComboBox x:Name="FolderNameTextBox" Height="23" Margin="10,36,10,0" VerticalAlignment="Top" IsEditable="True" IsTabStop="True" IsTextSearchEnabled="False" KeyDown="KeyPressed"/>-->
         <TextBox x:Name="FolderNameTextBox" Height="23" Margin="10,36,10,0" VerticalAlignment="Top" KeyDown="KeyPressed" VerticalContentAlignment="Center"/>
         <Button x:Name="ShowLastFolders" Content="&#709;" Margin="0,36,10,0" VerticalAlignment="Top" Height="23" Click="LastFilesButton_Click" HorizontalAlignment="Right" Width="15" Background="{x:Null}" BorderBrush="{x:Null}"/>
-        <ListBox x:Name="LastFoldersList" Margin="10,64,10,10" Panel.ZIndex="99" Visibility="Collapsed" SelectionChanged="LastFoldersList_SelectionChanged" MouseLeave="ListviewMouseLeave">
+        <ListBox x:Name="LastFoldersList" Margin="10,64,10,10" Panel.ZIndex="99" Visibility="Collapsed" LostFocus="ListBoxLostFocus" SelectionChanged="LastFoldersList_SelectionChanged" MouseLeave="ListviewMouseLeave">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

@@ -70,10 +70,6 @@ namespace Photo_Importer
 			FolderNameTextBox.Focus();
 			LastFoldersList.ItemsSource = Settings.Default.LastFolders;
 
-			//For Combo box uncomment
-			//FolderNameTextBox.ItemsSource = Settings.Default.LastFolders;
-			//FolderNameTextBox.Focus();
-			//Keyboard.Focus(this.FolderNameTextBox);
 			var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
 			this.Left = desktopWorkingArea.Right - this.Width;
 			this.Top = desktopWorkingArea.Bottom - this.Height;
@@ -263,9 +259,9 @@ namespace Photo_Importer
 			{
 				LastFoldersList.Visibility = Visibility.Collapsed;
 				ShowLastFolders.Content = "\u02c5";
+				
 			}
 		}
-
 		private void LastFoldersList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			FolderNameTextBox.Text = LastFoldersList.SelectedItem.ToString();
@@ -281,9 +277,30 @@ namespace Photo_Importer
 
 		private void ListviewMouseLeave(object sender, MouseEventArgs e)
 		{
-			LastFoldersList.Visibility = Visibility.Collapsed;
-			ShowLastFolders.Content = "\u02c5";
+			//LastFoldersList.Visibility = Visibility.Collapsed;
+			//ShowLastFolders.Content = "\u02c5";
 
+		}
+
+		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if(LastFoldersList.Visibility == Visibility.Visible)
+			{
+				var mouseWasDownOn = e.Source as FrameworkElement;
+				if (mouseWasDownOn != null)
+				{
+					string elementName = mouseWasDownOn.Name;
+					if(elementName == ShowLastFolders.Name)
+					{
+						return;
+					}
+					if(elementName != LastFoldersList.Name)
+					{
+						LastFoldersList.Visibility = Visibility.Collapsed;
+						ShowLastFolders.Content = "\u02c5";
+					}
+				}
+			}
 		}
 	}
 }
