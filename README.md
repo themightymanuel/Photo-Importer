@@ -1,7 +1,7 @@
 # Photo-Importer
 
 ## Current Release
-[v0.1-beta.5](https://github.com/themightymanuel/Photo-Importer/releases/tag/v0.1-beta.5)
+[v0.1-beta.6](https://github.com/themightymanuel/Photo-Importer/releases/tag/v0.1-beta.6)
 
 ## Instructions
 1. Download and extract zip file.
